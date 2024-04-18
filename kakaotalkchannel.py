@@ -31,7 +31,7 @@ class KakaoTalkChannel:
     """
 
     @staticmethod
-    def get_profile_image(channel_url):
+    def get_profile_image(channel_url, image_type="medium"):
         """
         `KakaoTalkChannel.get_profile_image` 카카오톡 채널에서 og meta 정보 `og:image` 공유 이미지 주소 가져오기
 
@@ -41,7 +41,7 @@ class KakaoTalkChannel:
         from kakaotalkchannel import KakaoTalkChannel
 
         channel_url = 'http://pf.kakao.com/_xxxxx'
-        image_url = KakaoTalkChannel.get_profile_image(channel_url)
+        image_url = KakaoTalkChannel.get_profile_image(channel_url, image_type='large')  # large, medium, small
         ```
         """
 
@@ -58,6 +58,11 @@ class KakaoTalkChannel:
             print("OG 이미지 URL:", og_image_url)
         else:
             print("OG 이미지를 찾을 수 없습니다.")
+
+        if image_type == "large":
+            og_image_url = og_image_url.replace("_m.jpg", "_l.jpg")
+        elif image_type == "small":
+            og_image_url = og_image_url.replace("_m.jpg", "_s.jpg")
 
         return og_image_url
 
@@ -104,10 +109,11 @@ class KakaoTalkChannel:
         ```
         """
 
-        requests.post(
+        response = requests.post(
             SLACK_SEND_URL,
             json={"text": text},
         )
+        return response
 
 
 if __name__ == "__main__":
@@ -116,5 +122,7 @@ if __name__ == "__main__":
     image_text = KakaoTalkChannel.image_to_string(image_url)
     if image_text[0] == "0":
         image_text = image_text[1:]
+    image_text += image_url
     print(image_text)
-    KakaoTalkChannel.send_slack(image_text)
+    r = KakaoTalkChannel.send_slack(image_text)
+    print(SLACK_SEND_URL, r)
