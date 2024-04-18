@@ -1,5 +1,5 @@
 # 카카오톡 채널 프로필 이미지
-카카오톡 채널에서 og meta 정보 `og:image` 공유 이미지를 가져와서 OCR을 통해 텍스트 추출
+카카오톡 채널에서 og meta 정보 `og:image` 공유 이미지를 가져와서 OCR을 통해 텍스트 추출 및 Slack 메세지 보내기
 
 <p align="center">
 <img src="screen-1.jpg" align="center" width="45%">
